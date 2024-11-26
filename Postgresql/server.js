@@ -1,27 +1,41 @@
-// ============================================
-// server.js - Archivo principal del servidor
-// ============================================
+/** 
+ * ============================================
+ * server.js - Main Server File
+ * ============================================
+ */
 
-// Importamos módulos y rutas necesarios
-const express = require('express'); // Framework web para manejar solicitudes HTTP y crear APIs REST
-const tenantRoutes = require('./routes/tenantRoutes'); // Rutas para la tabla 'tenants' (clientes)
-const stockRoutes = require('./routes/stockRoutes'); // Rutas para la tabla 'stocks' (inventario)
-const tenantMiddleware = require('./middleware/tenantMiddleware'); // Middleware para manejar y validar el tenant activo
-require('dotenv').config(); // Carga las variables de entorno desde el archivo .env
+// Import required modules and routes
+const express = require('express'); // Web framework for handling HTTP requests and creating REST APIs
+const tenantRoutes = require('./routes/tenantRoutes'); // Routes for managing the 'tenants' table (clients)
+const stockRoutes = require('./routes/stockRoutes'); // Routes for managing the 'stocks' table (inventory)
+const tenantMiddleware = require('./middleware/tenantMiddleware'); // Middleware to handle and validate the active tenant
+require('dotenv').config(); // Load environment variables from the .env file
 
-// Creamos una instancia de la aplicación Express
+// Create an instance of the Express application
 const app = express();
 
-// Middlewares
-app.use(express.json()); // Middleware para parsear el cuerpo de las solicitudes HTTP en formato JSON
-app.use(tenantMiddleware); // Middleware personalizado para manejar el contexto del tenant activo
+/** 
+ * =======================
+ * Middlewares
+ * =======================
+ */
+app.use(express.json()); // Middleware to parse the body of HTTP requests as JSON
+app.use(tenantMiddleware); // Middleware to handle the tenant context
 
-// Rutas
-app.use('/tenants', tenantRoutes); // Endpoints relacionados con la gestión de clientes (tenants)
-app.use('/stocks', stockRoutes); // Endpoints relacionados con la gestión del inventario (stocks)
+/** 
+ * =======================
+ * Routes
+ * =======================
+ */
+app.use('/tenants', tenantRoutes); // Routes for tenant management
+app.use('/stocks', stockRoutes); // Routes for stock (inventory) management
 
-// Configuración del puerto y arranque del servidor
-const PORT = process.env.PORT || 3000; // Define el puerto desde las variables de entorno o usa 3000 por defecto
+/** 
+ * =======================
+ * Server Startup
+ * =======================
+ */
+const PORT = process.env.PORT || 3000; // Get the port from environment variables or default to 3000
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`); // Mensaje en consola indicando que el servidor está activo
+    console.log(`Server running on http://localhost:${PORT}`); // Log server status and port
 });
