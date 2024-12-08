@@ -16,6 +16,7 @@ const registerRoute = require('./routes/register'); // Route for registration
 const loginRoute = require('./routes/login'); // Route for login
 const tenantRoutes = require('./routes/tenantRoutes'); // Routes for tenants
 const stockRoutes = require('./routes/stockRoutes'); // Routes for stocks
+const userRoutes = require('./routes/userRoutes'); // Routes for user profiles
 const tenantMiddleware = require('./middleware/tenantMiddleware'); // Middleware for tenant context
 
 // Create an Express application
@@ -56,15 +57,11 @@ app.use('/register', registerRoute); // Register route
 app.use('/login', loginRoute); // Login route
 app.use('/tenants', tenantMiddleware, tenantRoutes); // Tenant routes
 app.use('/stocks', tenantMiddleware, stockRoutes); // Stock routes
+app.use('/userprofile', tenantMiddleware, userRoutes); // User profile routes
 
 // Render login page
 app.get('/', (req, res) => {
     res.render('loginpage');
-});
-
-// Render registration page
-app.get('/registerpage', (req, res) => {
-    res.render('registerpage');
 });
 
 /**
