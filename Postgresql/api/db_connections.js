@@ -1,6 +1,6 @@
 /**
  * ===================================================
- * db.js - PostgreSQL Connection Configuration
+ * db_connections.js - PostgreSQL Connection Configuration
  * ===================================================
  */
 
