@@ -1,0 +1,66 @@
+# Artillery test script to stress test and force a failure
+config:
+  target: "http://localhost:3000" # Cambia por la URL de tu servidor
+  phases:
+    - duration: 30
+      arrivalRate: 0
+      rampTo: 100
+      name: "Case 1: Gradual ramp-up to 100 virtual users"
+    - duration: 60
+      arrivalRate: 100
+      name: "Case 2: Sustained load with 100 virtual users"
+    - duration: 30
+      arrivalRate: 100
+      rampTo: 500
+      name: "Case 3: Stress ramp-up to 500 virtual users"
+    - duration: 60
+      arrivalRate: 500
+      name: "Case 4: Sustained load with 500 virtual users"
+    - duration: 30
+      arrivalRate: 500
+      rampTo: 1000
+      name: "Case 5: Overload ramp-up to 1000 virtual users"
+  payload:
+    path: "users.csv"
+    loadAll: true
+    skipHeader: true
+    order: sequence
+    delimiter: ","
+    skipEmptyLines: true
+    fields:
+      - "username"
+      - "email"
+      - "password"
+
+scenarios:
+  - name: "User profile operations under stress"
+    flow:
+      - log: "Creating a new user profile"
+      - post:
+          url: "/userprofile"
+          json:
+            username: "{{ username }}"
+            email: "{{ email }}"
+            password: "{{ password }}"
+          expect:
+            - statusCode: 201
+      - log: "Fetching all user profiles"
+      - get:
+          url: "/userprofile"
+          expect:
+            - statusCode: 200
+      - log: "Updating a user profile"
+      - put:
+          url: "/userprofile/1" # Actualiza con el ID correspondiente
+          json:
+            username: "Updated_{{ username }}"
+            email: "{{ email }}"
+            password: "{{ password }}"
+          expect:
+            - statusCode: 200
+      - log: "Deleting a user profile"
+      - delete:
+          url: "/userprofile/1" # Actualiza con el ID correspondiente
+          expect:
+            - statusCode: 200
+    count: 10 # Cada usuario virtual hará este flujo 10 veces
