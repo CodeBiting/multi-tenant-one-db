@@ -1,22 +1,30 @@
 doctype html
 html
     head
+        // Set the title of the page
         title Login Page
+        // Define character encoding
         meta(charset="utf-8")
+        // Set the viewport for responsive design
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        // Link to Bootstrap CSS for styling
         link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css")
     body
+        // Main container for the login page
         .container.mt-5
             .row.justify-content-center
                 .col-md-6
+                    // Header for the login page
                     h1.text-center Login
-                    form(method="POST", action="/login") 
+                    // Login form
+                    form(method="POST", action="/login")
+                        // Email input field
                         .mb-3
                             label(for="email") Email
                             input#email.form-control(type="email", name="email", placeholder="Enter your email", required=true)
+                        // Password input field
                         .mb-3
                             label(for="password") Password
                             input#password.form-control(type="password", name="password", placeholder="Enter your password", required=true)
+                        // Submit button for the form
                         button.btn.btn-primary.w-100(type="submit") Login
-                    .mt-3.text-center
-                        a.btn.btn-secondary(href="/registerpage") Register
